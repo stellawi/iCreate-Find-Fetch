@@ -8,9 +8,18 @@ use common\FileInteractor;
 
 class DataManager {
 	private $_logTyper = null;
+	private $_dataManagerInstance = null;
 	
-	public function __construct(){
+	private function __construct(){
 		$_logTyper = LogManager::getInstance();
+	}
+	
+	public static function getInstance(){
+		if ($_dataManagerInstance == null){
+			$_dataManagerInstance = new DataManager();
+		}
+		
+		return _dataManagerInstance;
 	}
 	
 	public function loadDatabase(){

@@ -14,25 +14,29 @@ class LogManager {
 	const PARAM_DIR = "destDirectory";
 	
 	private function __construct(){
+		initializeLogManager();
+	}
+	
+	private function initializeLogManager(){
 		$mode = "r";
 		$lines = FileInteractor::interactWithFile($mode, FILE_CONFIG_LOG);
 		
 		foreach ($lines as &$buffer) {
 			$delimiter = "=";
 			$tokens = explode($delimiter, $buffer);
-			
+				
 			if ($tokens[0] != null) {
 				$trimmed[0] = trim($tokens[0]);
 			} else {
 				continue;
 			}
-			
+				
 			if ($tokens[1] != null) {
 				$trimmed[1] = trim($tokens[1]);
 			} else {
 				continue;
 			}
-			
+				
 			if (strcmp(PARAM_EMAIL, $trimmed[0]) == 0) {
 				$_destEmail = $trimmed[1];
 			} elseif (strcmp(PARAM_DIR, $trimmed[0]) == 0) {
