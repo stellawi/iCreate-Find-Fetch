@@ -1,7 +1,7 @@
 <?php
-namespace FindFetchPhp\data;
+namespace data;
 
-class user {
+class User {
 	private $name;
 	private $password;
 	private $isNus;
