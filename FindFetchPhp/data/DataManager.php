@@ -89,15 +89,16 @@ class DataManager {
 		// error while executing that code, it stops immediately and jumps down to the
 		// catch block.  For more detailed information on exceptions and try/catch blocks:
 		// http://us2.php.net/manual/en/language.exceptions.php
-		try{
+		try {
 			// This statement opens a connection to your database using the PDO library
 			// PDO is designed to provide a flexible interface between PHP and many
 			// different types of database servers.  For more information on PDO:
 			// http://us2.php.net/manual/en/class.pdo.php
 			$db = new PDO("mysql:host={$this->_host};dbname={$this->_dbname};charset={$this->_charset}", $this->_username, $this->_password, $options);
-		}
-		catch(PDOException $ex){
-			$_logTyper->enterLog("Failed to connect to the database: ");
+		} catch (PDOException $ex){
+			$errorMessage = "Failed to connect to the database: ";
+			$_logTyper->enterLog($errorMessage);
+			die ($errorMessage);
 		}
 		 
 		// This statement configures PDO to throw an exception when it encounters
