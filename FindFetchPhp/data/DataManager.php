@@ -8,13 +8,13 @@ use common\FileInteractor;
 use exception\DataException;
 
 class DataManager {
-	private $_logTyper = null;
-	private $_username = null;
-	private $_password = null;
-	private $_host = null;
-	private $_dbname = null;
-	private $_charset = null;
-	private $_db = null;
+	private $_logTyper = NULL;
+	private $_username = NULL;
+	private $_password = NULL;
+	private $_host = NULL;
+	private $_dbname = NULL;
+	private $_charset = NULL;
+	private $_db = NULL;
 	const FILE_CONFIG_LOG = "/data/DataAccess.config";
 	const PARAM_NAME = "username";
 	const PARAM_PASS = "password";
@@ -45,13 +45,13 @@ class DataManager {
 			$delimiter = "=";
 			$tokens = explode($delimiter, $buffer);
 		
-			if ($tokens[0] != null) {
+			if ($tokens[0] != NULL) {
 				$trimmed[0] = trim($tokens[0]);
 			} else {
 				continue;
 			}
 		
-			if ($tokens[1] != null) {
+			if ($tokens[1] != NULL) {
 				$trimmed[1] = trim($tokens[1]);
 			} else {
 				continue;
@@ -246,7 +246,7 @@ class DataManager {
 	} 
 	
 	private function executeQuery($query){
-		$queryExec = null;
+		$queryExec = NULL;
 		try {
 			$stmt = executeQuery($query, $queryExec);
 		} catch (DataException $ex){
@@ -269,7 +269,7 @@ class DataManager {
 	}
 	
 	public function closeDatabase(){
-		$_db = null;
+		$_db = NULL;
 	}
 }
 ?>
