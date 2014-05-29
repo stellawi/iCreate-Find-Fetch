@@ -150,6 +150,13 @@ class DataManager {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param string $data
+	 * @param string $param
+	 * @param string $src
+	 * @return NULL| array
+	 */
 	public function retrieveSingleData($data, $param, $src){
 		$src = trim($src);
 		$param = trim($param);
@@ -160,6 +167,11 @@ class DataManager {
 		
 		$stmt = self::executeQuery($query, $queryExec);
 		
+		//error
+		if ($stmt == null){
+			return null;
+		}
+		
 		$row = $stmt->fetch();
 		
 		if ($row) {
@@ -169,12 +181,22 @@ class DataManager {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param string $src
+	 * @return NULL|array
+	 */
 	public function retrieveAllDataFrom($src){
 		$src = trim($src);
 		
 		$query = "Select * FROM " . $src;
 		
 		$stmt = self::executeQuery($query);
+		
+		//error
+		if ($stmt == null){
+			return null;
+		}
 		
 		$rows = $stmt->fetchAll();
 		
@@ -185,12 +207,24 @@ class DataManager {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param array $dataParams
+	 * @param array $dataValues
+	 * @param string $dest
+	 * @return NULL|boolean
+	 */
 	public function insertData($dataParams, $dataValues, $dest){
 		$dest = trim($dest);
 		
 		$query = getQueryString($dest, $dataParams);
 		
 		$stmt = self::executeQuery($query, $dataValues);
+		
+		//error
+		if ($stmt == null){
+			return null;
+		}
 		
 		if ($stmt == null){
 			return false;
