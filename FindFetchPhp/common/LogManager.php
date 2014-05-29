@@ -6,9 +6,9 @@ require '/common/Autoload.php';
 use common\FileInteractor;
 
 class LogManager {
-	private $_destEmail = null;
-	private $_destDirectory = null;
-	private $_logManagerInstance = null;
+	private $_destEmail = NULL;
+	private $_destDirectory = NULL;
+	private $_logManagerInstance = NULL;
 	const FILE_CONFIG_LOG = "/common/LogDestination.config";
 	const PARAM_EMAIL = "destEmail";
 	const PARAM_DIR = "destDirectory";
@@ -25,13 +25,13 @@ class LogManager {
 			$delimiter = "=";
 			$tokens = explode($delimiter, $buffer);
 				
-			if ($tokens[0] != null) {
+			if ($tokens[0] != NULL) {
 				$trimmed[0] = trim($tokens[0]);
 			} else {
 				continue;
 			}
 				
-			if ($tokens[1] != null) {
+			if ($tokens[1] != NULL) {
 				$trimmed[1] = trim($tokens[1]);
 			} else {
 				continue;
@@ -50,7 +50,7 @@ class LogManager {
 	}
 
 	public static function getInstance(){
-		if ($this->_logManagerInstance == null) {
+		if ($this->_logManagerInstance == NULL) {
 			$this->_logManagerInstance = new LogManager();
 		}
 		
