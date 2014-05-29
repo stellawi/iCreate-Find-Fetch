@@ -5,6 +5,7 @@ require '/common/Autoload.php';
 
 use common\LogManager;
 use common\FileInteractor;
+use exception\DataException;
 
 class DataManager {
 	private $_logTyper = null;
@@ -155,7 +156,8 @@ class DataManager {
 	 * @param string $data
 	 * @param string $param
 	 * @param string $src
-	 * @return NULL| array
+	 * @throws DataException
+	 * @return array
 	 */
 	public function retrieveSingleData($data, $param, $src){
 		$src = trim($src);
@@ -165,46 +167,37 @@ class DataManager {
 		
 		$queryExec = array($data);
 		
-		$stmt = self::executeQuery($query, $queryExec);
-		
-		//error
-		if ($stmt == null){
-			return null;
+		try {
+			$stmt = self::executeQuery($query, $queryExec);
+		} catch (DataException $ex){
+			throw $ex;
 		}
 		
 		$row = $stmt->fetch();
 		
-		if ($row) {
-			return $row;
-		} else {
-			return null;
-		}
+		return $row;
 	}
 	
 	/**
 	 * 
 	 * @param string $src
-	 * @return NULL|array
+	 * @throws DataException
+	 * @return array
 	 */
 	public function retrieveAllDataFrom($src){
 		$src = trim($src);
 		
 		$query = "Select * FROM " . $src;
 		
-		$stmt = self::executeQuery($query);
-		
-		//error
-		if ($stmt == null){
-			return null;
+		try {
+			$stmt = self::executeQuery($query);
+		} catch (DataException $ex){
+			throw $ex;
 		}
 		
 		$rows = $stmt->fetchAll();
 		
-		if ($rows){
-			return $rows;
-		} else {
-			return null;
-		}
+		return $rows;
 	}
 	
 	/**
@@ -212,24 +205,17 @@ class DataManager {
 	 * @param array $dataParams
 	 * @param array $dataValues
 	 * @param string $dest
-	 * @return NULL|boolean
+	 * @throws DataException
 	 */
 	public function insertData($dataParams, $dataValues, $dest){
 		$dest = trim($dest);
 		
 		$query = getQueryString($dest, $dataParams);
-		
-		$stmt = self::executeQuery($query, $dataValues);
-		
-		//error
-		if ($stmt == null){
-			return null;
-		}
-		
-		if ($stmt == null){
-			return false;
-		} else {
-			return true;
+
+		try {
+			$stmt = self::executeQuery($query, $dataValues);
+		} catch (DataException $ex){
+			throw $ex;
 		}
 	}
 	
@@ -260,7 +246,12 @@ class DataManager {
 	
 	private function executeQuery($query){
 		$queryExec = null;
-		return executeQuery($query, $queryExec);
+		try {
+			$stmt = executeQuery($query, $queryExec);
+		} catch (DataException $ex){
+			throw $ex;
+		}
+		return $stmt;
 	}
 	
 	private function executeQuery($query, $queryExec){
@@ -269,10 +260,9 @@ class DataManager {
 			$result = $stmt->execute($queryExec);
 		}
 		catch (PDOException $ex) {
-			$response["success"] = 0;
-			$response["message"] = "Database Error!";
-			$this->_logTyper->enterLog(json_encode($response));
-			return null;
+			$errorMessage = "Database Error!";
+			$this->_logTyper->enterLog($errorMessage);
+			throw new DataException($errorMessage);
 		}
 		return $stmt;
 	}
