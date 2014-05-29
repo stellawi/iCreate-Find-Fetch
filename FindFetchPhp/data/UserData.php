@@ -1,7 +1,9 @@
 <?php
 namespace data;
 
-require '/common/Autoload.php';
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/data/User.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/data/DataManager.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/exception/DataException.php');
 
 use data\User;
 use data\DataManager;
@@ -13,8 +15,7 @@ class UserData{
 	const USER_DATA_TABLE = "users";
 	const PARAM_NAME = "USERNAME";
 	const PARAM_PASS = "PASSWORD";
-	const PARAM_ISNUS = "ISNUS";
-	
+		
 	public function __construct(){
 		self::initializeUserData();
 	}
@@ -41,9 +42,8 @@ class UserData{
 		if ($curUserData){
 			$name = $curUserData[self::PARAM_NAME];
 			$pass = $curUserData[self::PARAM_PASS];
-			$isNus = $curUserData[self::PARAM_ISNUS];
 			
-			$curUser = new User($name, $pass, $isNus);
+			$curUser = new User($name, $pass);
 			
 			return $curUser;
 		} else {
@@ -77,7 +77,7 @@ class UserData{
 	 * @throws DataException
 	 */
 	public function saveUserToDatabase($curUser){
-		$dataParams = array(self::PARAM_NAME, self::PARAM_PASS, self::PARAM_ISNUS);
+		$dataParams = array(self::PARAM_NAME, self::PARAM_PASS);
 		$dataValues = $curUser->getAllInfo();
 		$dest = self::USER_DATA_TABLE;
 		

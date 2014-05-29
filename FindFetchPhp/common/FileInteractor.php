@@ -15,9 +15,11 @@ class FileInteractor {
 				die("Error: unexpected fgets() fail\n");
 			}
 			fclose($handle);
-		}
-		
-		return $lines;
+			
+			return $lines;
+		} else {
+			return NULL;
+		}	
 	}
 }
 ?>

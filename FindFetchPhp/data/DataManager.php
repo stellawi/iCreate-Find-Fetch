@@ -1,11 +1,12 @@
 <?php
 namespace data;
 
-require '/common/Autoload.php';
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/common/LogManager.php');
 
 use common\LogManager;
 use common\FileInteractor;
 use exception\DataException;
+use PDO;
 
 class DataManager {
 	private $_logTyper = NULL;
@@ -41,39 +42,41 @@ class DataManager {
 	private function getDataAccess(){
 		$mode = "r";
 		$lines = FileInteractor::interactWithFile($mode, self::FILE_CONFIG_LOG);
-		
-		foreach ($lines as &$buffer) {
-			$delimiter = "=";
-			$tokens = explode($delimiter, $buffer);
-		
-			if ($tokens[0] != NULL) {
-				$trimmed[0] = trim($tokens[0]);
-			} else {
-				continue;
+		if (is_array($lines)){
+			foreach ($lines as &$buffer) {
+				$delimiter = "=";
+				$tokens = explode($delimiter, $buffer);
+			
+				if ($tokens[0] != NULL) {
+					$trimmed[0] = trim($tokens[0]);
+				} else {
+					continue;
+				}
+			
+				if ($tokens[1] != NULL) {
+					$trimmed[1] = trim($tokens[1]);
+				} else {
+					continue;
+				}
+			
+				if (strcmp(self::PARAM_NAME, $trimmed[0]) == 0) {
+					$this->_username = $trimmed[1];
+				} elseif (strcmp(self::PARAM_PASS, $trimmed[0]) == 0) {
+					$this->_password = $trimmed[1];
+				} elseif (strcmp(self::PARAM_BASE, $trimmed[0]) == 0) {
+					$this->_dbname = $trimmed[1];
+				} elseif (strcmp(self::PARAM_HOST, $trimmed[0]) == 0) {
+					$this->_host = $trimmed[1];
+				} elseif (strcmp(self::PARAM_CHARSET, $trimmed[0] == 0)) {
+					$this->_charset = $trimmed[1];
+				} else {
+					//do nothing
+				}
 			}
-		
-			if ($tokens[1] != NULL) {
-				$trimmed[1] = trim($tokens[1]);
-			} else {
-				continue;
-			}
-		
-			if (strcmp(self::PARAM_NAME, $trimmed[0]) == 0) {
-				$this->_username = $trimmed[1];
-			} elseif (strcmp(self::PARAM_PASS, $trimmed[0]) == 0) {
-				$this->_password = $trimmed[1];
-			} elseif (strcmp(self::PARAM_BASE, $trimmed[0]) == 0) {
-				$this->_dbname = $trimmed[1];
-			} elseif (strcmp(self::PARAM_HOST, $trimmed[0]) == 0) {
-				$this->_host = $trimmed[1];
-			} elseif (strcmp(self::PARAM_CHARSET, $trimmed[0] == 0)) {
-				$this->_charset = $trimmed[1];
-			} else {
-				//do nothing
-			}
+			
+			unset ($buffer);
 		}
 		
-		unset ($buffer);
 	}
 
 	private function loadDatabase(){
@@ -170,7 +173,7 @@ class DataManager {
 		$queryExec = array ($data);
 		
 		try {
-			$stmt = self::executeQuery($query, $queryExec);
+			$stmt = self::executeFlexiQuery($query, $queryExec);
 		} catch (DataException $ex){
 			throw $ex;
 		}
@@ -215,7 +218,7 @@ class DataManager {
 		$query = getInsertQueryString($dest, $dataParams);
 
 		try {
-			$stmt = self::executeQuery($query, $dataValues);
+			$stmt = self::executeFlexiQuery($query, $dataValues);
 		} catch (DataException $ex){
 			throw $ex;
 		}
@@ -237,7 +240,7 @@ class DataManager {
 		$queryExec = array ($data);
 		
 		try {
-			$stmt = self::executeQuery($query, $queryExec);
+			$stmt = self::executeFlexiQuery($query, $queryExec);
 		} catch (DataException $ex){
 			throw $ex;
 		}
@@ -259,7 +262,7 @@ class DataManager {
 		$queryExec = $data;
 		
 		try {
-			$stmt = self::executeQuery($query, $queryExec);
+			$stmt = self::executeFlexiQuery($query, $queryExec);
 		} catch (DataException $ex){
 			throw $ex;
 		}
@@ -321,14 +324,14 @@ class DataManager {
 	private function executeQuery($query){
 		$queryExec = NULL;
 		try {
-			$stmt = executeQuery($query, $queryExec);
+			$stmt = executeFlexiQuery($query, $queryExec);
 		} catch (DataException $ex){
 			throw $ex;
 		}
 		return $stmt;
 	}
 	
-	private function executeQuery($query, $queryExec){
+	private function executeFlexiQuery($query, $queryExec){
 		try {
 			$stmt   = $db->prepare($query);
 			$result = $stmt->execute($queryExec);
