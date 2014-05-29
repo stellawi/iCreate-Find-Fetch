@@ -14,12 +14,12 @@ class LogManager {
 	const PARAM_DIR = "destDirectory";
 	
 	private function __construct(){
-		initializeLogManager();
+		self::initializeLogManager();
 	}
 	
 	private function initializeLogManager(){
 		$mode = "r";
-		$lines = FileInteractor::interactWithFile($mode, FILE_CONFIG_LOG);
+		$lines = FileInteractor::interactWithFile($mode, self::FILE_CONFIG_LOG);
 		
 		foreach ($lines as &$buffer) {
 			$delimiter = "=";
@@ -37,10 +37,10 @@ class LogManager {
 				continue;
 			}
 				
-			if (strcmp(PARAM_EMAIL, $trimmed[0]) == 0) {
-				$_destEmail = $trimmed[1];
-			} elseif (strcmp(PARAM_DIR, $trimmed[0]) == 0) {
-				$_destDirectory = $trimmed[1];
+			if (strcmp(self::PARAM_EMAIL, $trimmed[0]) == 0) {
+				$this->_destEmail = $trimmed[1];
+			} elseif (strcmp(self::PARAM_DIR, $trimmed[0]) == 0) {
+				$this->_destDirectory = $trimmed[1];
 			} else {
 				//do nothing
 			}
@@ -50,16 +50,16 @@ class LogManager {
 	}
 
 	public static function getInstance(){
-		if ($_logManagerInstance == null) {
-			$_logManagerInstance = new LogManager();
+		if ($this->_logManagerInstance == null) {
+			$this->_logManagerInstance = new LogManager();
 		}
 		
-		return $_logManagerInstance;
+		return $this->_logManagerInstance;
 	}
 
 	public function enterLog($message){
-		$isEmailSent = error_log($message, 1, $_destEmail);
-		$isSavedToDirectory = error_log($message, 3, $_destDirectory);
+		$isEmailSent = error_log($message, 1, $this->_destEmail);
+		$isSavedToDirectory = error_log($message, 3, $this->_destDirectory);
 		return $isEmailSent || $isSavedToDirectory;
 	}
 }

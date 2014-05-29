@@ -3,8 +3,7 @@ namespace common;
 
 class FileInteractor {
 	public static function interactWithFile($mode, $src) {
-		$mode = "r";
-		$handle = @fopen(FILE_CONFIG_LOG, $mode);
+		$handle = @fopen($src, $mode);
 		if ($handle) {
 			$length = 4096;
 			$lineNo = 0;
