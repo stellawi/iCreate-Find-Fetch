@@ -70,5 +70,26 @@ class UserData{
 			return true;
 		}
 	}
+	
+	/**
+	 * 
+	 * @param \data\User $curUser
+	 * @throws DataException
+	 */
+	public function saveUserToDatabase($curUser){
+		$dataParams = array(self::PARAM_NAME, self::PARAM_PASS, self::PARAM_ISNUS);
+		$dataValues = $curUser->getAllInfo();
+		$dest = self::USER_DATA_TABLE;
+		
+		try {
+			$this->dataManagerInstance->insertData($dataParams, $dataValues, $dest);
+		} catch (DataException $ex){
+			throw $ex;
+		}
+	}
+	
+	public function closeUserData(){
+		$this->dataManagerInstance->closeDatabase();
+	}
 }
 ?>

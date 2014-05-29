@@ -12,6 +12,11 @@ class User {
 		$this->_isNus = $isNusUser;
 	}
 	
+	public function getAllInfo(){
+		$allInfo = array($this->_name, $this->_password, $this->_isNus);
+		return $allInfo;
+	}
+	
 	public function getName(){
 		return $this->_name;
 	}
