@@ -150,7 +150,26 @@ class DataManager {
 		}
 	}
 	
-	public function retrieveDataFrom($src){
+	public function retrieveSingleData($data, $param, $src){
+		$src = trim($src);
+		$param = trim($param);
+		
+		$query = "Select * FROM " . $src . " where " . $param . " = ?";
+		
+		$queryExec = array($data);
+		
+		$stmt = self::executeQuery($query, $queryExec);
+		
+		$row = $stmt->fetch();
+		
+		if ($row) {
+			return $row;
+		} else {
+			return null;
+		}
+	}
+	
+	public function retrieveAllDataFrom($src){
 		$src = trim($src);
 		
 		$query = "Select * FROM " . $src;
@@ -159,7 +178,11 @@ class DataManager {
 		
 		$rows = $stmt->fetchAll();
 		
-		return $rows;
+		if ($rows){
+			return $rows;
+		} else {
+			return null;
+		}
 	}
 	
 	public function insertData($dataParams, $dataValues, $dest){
@@ -167,7 +190,7 @@ class DataManager {
 		
 		$query = getQueryString($dest, $dataParams);
 		
-		$stmt = self::executeQuery($query);
+		$stmt = self::executeQuery($query, $dataValues);
 		
 		if ($stmt == null){
 			return false;
@@ -202,9 +225,14 @@ class DataManager {
 	} 
 	
 	private function executeQuery($query){
+		$queryExec = null;
+		return executeQuery($query, $queryExec);
+	}
+	
+	private function executeQuery($query, $queryExec){
 		try {
 			$stmt   = $db->prepare($query);
-			$result = $stmt->execute($query_params);
+			$result = $stmt->execute($queryExec);
 		}
 		catch (PDOException $ex) {
 			$response["success"] = 0;
