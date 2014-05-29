@@ -21,6 +21,7 @@ class DataManager {
 	const PARAM_HOST = "host";
 	const PARAM_BASE = "dbname";
 	const PARAM_CHARSET = "charset";
+	const EQUAL = "=";
 	const QUESTION_MARK = "?";
 	const BRACKET_OPEN = "(";
 	const BRACKET_CLOSE = ")";
@@ -166,7 +167,7 @@ class DataManager {
 		
 		$query = "Select * FROM " . $src . " where " . $param . " = ?";
 		
-		$queryExec = array($data);
+		$queryExec = array ($data);
 		
 		try {
 			$stmt = self::executeQuery($query, $queryExec);
@@ -211,7 +212,7 @@ class DataManager {
 	public function insertData($dataParams, $dataValues, $dest){
 		$dest = trim($dest);
 		
-		$query = getQueryString($dest, $dataParams);
+		$query = getInsertQueryString($dest, $dataParams);
 
 		try {
 			$stmt = self::executeQuery($query, $dataValues);
@@ -219,8 +220,80 @@ class DataManager {
 			throw $ex;
 		}
 	}
+
+	/**
+	 * 
+	 * @param String $data
+	 * @param String $param
+	 * @param String $src
+	 * @throws DataException
+	 */
+	public function deleteData($data, $param, $src){
+		$src = trim($src);
+		$param = trim($param);
+		
+		$query = "DELETE FROM " . $src . " where " . $param . " = ?";
+		
+		$queryExec = array ($data);
+		
+		try {
+			$stmt = self::executeQuery($query, $queryExec);
+		} catch (DataException $ex){
+			throw $ex;
+		}
+	}
 	
-	private function getQueryString($dest, $dataParams){
+	/**
+	 * 
+	 * @param array $data
+	 * @param String $mainParam
+	 * @param array $otherParams
+	 * @param String $src
+	 * @throws DataException
+	 */
+	public function updateData($data, $mainParam, $otherParams, $src){
+		$src = trim($src);
+		
+		$query = self::getUpdateQueryString($mainParam, $otherParams, $src);
+		
+		$queryExec = $data;
+		
+		try {
+			$stmt = self::executeQuery($query, $queryExec);
+		} catch (DataException $ex){
+			throw $ex;
+		}
+	}
+	
+	private function getUpdateQueryString($mainParam, $otherParams, $src){
+		$queryString = "UPDATE " . $src . self::SPACE;
+		
+		$setString = "SET ";
+		
+		$count = count($otherParams);
+		for ($i = 0; $i < $count; $i++) {
+			$curParam = trim($otherParams[$i]);
+			
+			$isLast = $i == ( $count - 1 );
+			
+			$curParam .= self::EQUAL . self::QUESTION_MARK;
+			
+			if (!isLast){
+				$curParam .= self::COMA . self::SPACE;
+			}
+			
+			$setString .= $curParam;
+		}
+		
+		$mainParam = trim($mainParam);
+		$whereString = "WHERE " . $mainParam . self::EQUAL . self::QUESTION_MARK;
+		
+		$queryString .= $setString . self::SPACE . $whereString;
+		
+		return $queryString;
+	}
+	
+	private function getInsertQueryString($dest, $dataParams){
 		$count = 0;
 		$queryParams = self::BRACKET_OPEN;
 		$queryValues = self::BRACKET_OPEN;
