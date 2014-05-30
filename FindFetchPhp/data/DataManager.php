@@ -1,12 +1,16 @@
 <?php
 namespace data;
 
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/common/LogManager.php');
+$rootFile = $_SERVER['DOCUMENT_ROOT'];
+
+require_once ($rootFile . '/common/LogManager.php');
 
 use common\LogManager;
 use common\FileInteractor;
 use exception\DataException;
 use PDO;
+use PDOException;
+use common;
 
 class DataManager {
 	private $_logTyper = NULL;
@@ -16,7 +20,7 @@ class DataManager {
 	private $_dbname = NULL;
 	private $_charset = NULL;
 	private $_db = NULL;
-	const FILE_CONFIG_LOG = "/data/DataAccess.config";
+	const FILE_NAME = "DataAccess.config";
 	const PARAM_NAME = "username";
 	const PARAM_PASS = "password";
 	const PARAM_HOST = "host";
@@ -40,20 +44,23 @@ class DataManager {
 	}
 	
 	private function getDataAccess(){
+		global $rootFile;
 		$mode = "r";
-		$lines = FileInteractor::interactWithFile($mode, self::FILE_CONFIG_LOG);
+		$src = $rootFile . "/data/" . self::FILE_NAME;
+		
+		$lines = FileInteractor::interactWithFile($mode, $src);
 		if (is_array($lines)){
 			foreach ($lines as &$buffer) {
 				$delimiter = "=";
 				$tokens = explode($delimiter, $buffer);
 			
-				if ($tokens[0] != NULL) {
+				if (isset ($tokens[0])) {
 					$trimmed[0] = trim($tokens[0]);
 				} else {
 					continue;
 				}
 			
-				if ($tokens[1] != NULL) {
+				if (isset ($tokens[1])) {
 					$trimmed[1] = trim($tokens[1]);
 				} else {
 					continue;
@@ -75,6 +82,9 @@ class DataManager {
 			}
 			
 			unset ($buffer);
+		} else {
+			echo print_r($lines);
+			die ("Loading access error");
 		}
 		
 	}
@@ -101,7 +111,7 @@ class DataManager {
 			$db = new PDO("mysql:host={$this->_host};dbname={$this->_dbname};charset={$this->_charset}", $this->_username, $this->_password, $options);
 		} catch (PDOException $ex){
 			$errorMessage = "Failed to connect to the database: ";
-			$_logTyper->enterLog($errorMessage);
+			$this->_logTyper->enterLog($errorMessage);
 			die ($errorMessage);
 		}
 		 
@@ -333,8 +343,13 @@ class DataManager {
 	
 	private function executeFlexiQuery($query, $queryExec){
 		try {
-			$stmt   = $db->prepare($query);
-			$result = $stmt->execute($queryExec);
+			$stmt   = $this->_db->prepare($query);
+			
+			if ($queryExec != NULL){
+				$result = $stmt->execute($queryExec);
+			} else {
+				$result = $stmt->execute();
+			}
 		}
 		catch (PDOException $ex) {
 			$errorMessage = "Database Error!";

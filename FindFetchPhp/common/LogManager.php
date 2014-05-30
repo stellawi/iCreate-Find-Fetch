@@ -1,7 +1,9 @@
 <?php
 namespace common;
 
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/common/FileInteractor.php');
+$rootFile = $_SERVER['DOCUMENT_ROOT'];
+
+require_once ($rootFile . '/common/FileInteractor.php');
 
 use common\FileInteractor;
 
@@ -9,7 +11,7 @@ class LogManager {
 	private $_destEmail = NULL;
 	private $_destDirectory = NULL;
 	private static $_logManagerInstance = NULL;
-	const FILE_CONFIG_LOG = "/common/LogDestination.config";
+	const FILE_NAME = "LogDestination.config";
 	const PARAM_EMAIL = "destEmail";
 	const PARAM_DIR = "destDirectory";
 	
@@ -18,21 +20,24 @@ class LogManager {
 	}
 	
 	private function initializeLogManager(){
+		global $rootFile;
 		$mode = "r";
-		$lines = FileInteractor::interactWithFile($mode, self::FILE_CONFIG_LOG);
+		$src = $rootFile . "/common/" . self::FILE_NAME;
+		
+		$lines = FileInteractor::interactWithFile($mode, $src);
 		
 		if (is_array($lines)){
 			foreach ($lines as &$buffer) {
 				$delimiter = "=";
 				$tokens = explode($delimiter, $buffer);
 					
-				if ($tokens[0] != NULL) {
+				if (isset ($tokens[0])) {
 					$trimmed[0] = trim($tokens[0]);
 				} else {
 					continue;
 				}
 					
-				if ($tokens[1] != NULL) {
+				if (isset ($tokens[1])) {
 					$trimmed[1] = trim($tokens[1]);
 				} else {
 					continue;
@@ -50,7 +55,18 @@ class LogManager {
 			unset ($buffer);
 		}
 		
+		$this->_destDirectory .= self::getLogFileName();
+	}
+	
+	private function getLogFileName(){
+		$today = date("Ymd");//yyyymmdd
 		
+		$prefix = "FindFetch";
+		$extension = ".log";
+		
+		$filename = $prefix . $today . $extension;
+		
+		return $filename;
 	}
 
 	public static function getInstance(){

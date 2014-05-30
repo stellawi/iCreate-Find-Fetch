@@ -3,7 +3,10 @@ namespace common;
 
 class FileInteractor {
 	public static function interactWithFile($mode, $src) {
-		$handle = @fopen($src, $mode);
+		ini_set('display_errors', 1); 
+		error_reporting(E_ALL);
+
+		$handle = fopen($src, $mode);
 		if ($handle) {
 			$length = 4096;
 			$lineNo = 0;
@@ -18,7 +21,8 @@ class FileInteractor {
 			
 			return $lines;
 		} else {
-			return NULL;
+			die ("can't open file!");
+			//return NULL;
 		}	
 	}
 }
