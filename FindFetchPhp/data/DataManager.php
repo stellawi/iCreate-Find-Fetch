@@ -225,7 +225,7 @@ class DataManager {
 	public function insertData($dataParams, $dataValues, $dest){
 		$dest = trim($dest);
 		
-		$query = getInsertQueryString($dest, $dataParams);
+		$query = self::getInsertQueryString($dest, $dataParams);
 
 		try {
 			$stmt = self::executeFlexiQuery($query, $dataValues);
@@ -317,7 +317,7 @@ class DataManager {
 				$count++;
 			} else {
 				$dataParam = self::COMA . self::SPACE . $dataParam;
-				$dataValue = self::COMA . self::SPACE . $queryValue;
+				$dataValue = self::COMA . self::SPACE . $dataValue;
 			}
 			
 			$queryParams .= $dataParam;
@@ -327,7 +327,7 @@ class DataManager {
 		$queryValues .= self::BRACKET_CLOSE;
 		unset ($dataParam);
 		
-		$queryString = 'INSERT INTO ' . $dest . self::SPACE . $queryParams . ' VALUES ' . queryValues;
+		$queryString = 'INSERT INTO ' . $dest . self::SPACE . $queryParams . ' VALUES ' . $queryValues;
 		return $queryString;
 	} 
 	

@@ -1,9 +1,11 @@
 <?php
 namespace data;
 
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/data/User.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/data/DataManager.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/exception/DataException.php');
+$rootFile = $_SERVER['DOCUMENT_ROOT'];
+
+require_once ($rootFile . '/data/User.php');
+require_once ($rootFile . '/data/DataManager.php');
+require_once ($rootFile . '/exception/DataException.php');
 
 use data\User;
 use data\DataManager;
@@ -64,7 +66,7 @@ class UserData{
 			throw $ex;
 		}
 		
-		if (curUser == NULL){
+		if ($curUser == NULL){
 			return false;
 		} else {
 			return true;

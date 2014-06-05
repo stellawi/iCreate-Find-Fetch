@@ -1,11 +1,15 @@
 <?php
 namespace server;
 
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/data/User.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/data/UserData.php');
+$rootFile = $_SERVER['DOCUMENT_ROOT'];
 
-use data\User;
+require_once ($rootFile . '/data/User.php');
+require_once ($rootFile . '/data/UserData.php');
+require_once ($rootFile . '/exception/DataException.php');
+
 use data\UserData;
+use data\User;
+use exception\DataException;
 
 $username = $_POST['username'];
 $password = $_POST['password'];
@@ -26,8 +30,6 @@ try {
 	$response["message"] = $ex->getMessage();	
 	
 	if (strcmp($type, TYPE_WEB) == 0){
-		// wait for 5 seconds
-		// header("refresh: 5; Location: " . $htmlPage);
 		echo "go back " . $htmlPage . " \n";
 	} 
 	
@@ -39,21 +41,15 @@ if ($curUser == NULL){
 	$response["message"] = "No such user!!";
 	
 	if (strcmp($type, TYPE_WEB) == 0){
-		// wait for 5 seconds
-		// header("Location: " . $htmlPage);
 		echo "go back " . $htmlPage . " \n";
 	} 
 	
 	echo (json_encode($response));
 } elseif ($curUser->isPasswordMatch($password)){
+	session_start();
+	
 	$response["success"] = 1;
 	$response["message"] = "Login successful!";
-	
-	if (strcmp($type, TYPE_WEB) == 0){
-		// wait for 5 seconds
-		// header("Location: " . $htmlPage);
-		echo "go back " . $htmlPage . " \n";
-	} 
 	
 	echo (json_encode($response));
 } else {
@@ -61,8 +57,6 @@ if ($curUser == NULL){
 	$response["message"] = "Invalid Credentials!";
 	
 	if (strcmp($type, TYPE_WEB) == 0){
-		// wait for 5 seconds
-		// header("Location: " . $htmlPage);
 		echo "go back " . $htmlPage . " \n";
 	} 
 	
