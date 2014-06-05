@@ -46,13 +46,16 @@ class LogManager {
 				if (strcmp(self::PARAM_EMAIL, $trimmed[0]) == 0) {
 					$this->_destEmail = $trimmed[1];
 				} elseif (strcmp(self::PARAM_DIR, $trimmed[0]) == 0) {
-					$this->_destDirectory = $trimmed[1];
+					$this->_destDirectory = $rootFile . $trimmed[1];
 				} else {
 					//do nothing
 				}
 			}
 		
 			unset ($buffer);
+		} else {
+			$errorMsg = "can't access LogFile";
+			die($errorMsg);
 		}
 		
 		$this->_destDirectory .= self::getLogFileName();
@@ -61,7 +64,7 @@ class LogManager {
 	private function getLogFileName(){
 		$today = date("Ymd");//yyyymmdd
 		
-		$prefix = "FindFetch";
+		$prefix = "/FindFetch";
 		$extension = ".log";
 		
 		$filename = $prefix . $today . $extension;

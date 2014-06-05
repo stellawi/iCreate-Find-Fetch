@@ -6,15 +6,18 @@ $rootFile = $_SERVER['DOCUMENT_ROOT'];
 require_once ($rootFile . '/data/User.php');
 require_once ($rootFile . '/data/UserData.php');
 require_once ($rootFile . '/exception/DataException.php');
+require_once ($rootFile . '/common/LogManager.php');
 
 use data\UserData;
 use data\User;
 use exception\DataException;
+use common\LogManager;
 
 $username = $_POST['username'];
 $password = $_POST['password'];
 $type = $_POST['type'];
 $type = trim ($type);
+$log = LogManager::getInstance();
 
 define("TYPE_WEB", "web");
 define("TYPE_APPS", "apps");
@@ -32,8 +35,9 @@ try {
 	if (strcmp($type, TYPE_WEB) == 0){
 		echo "go back " . $htmlPage . " \n";
 	} 
-	
+	$log->enterLog($ex->getMessage());
 	echo (json_encode($response));
+	return;
 }
 
 if ($curUser == NULL){
