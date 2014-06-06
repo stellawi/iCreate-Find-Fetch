@@ -1,11 +1,9 @@
 <?php
 namespace common;
 
-error_reporting(E_ALL);
-
 $rootFile = $_SERVER['DOCUMENT_ROOT'];
 
-require_once ($rootFile . '/common/FileInteractor.php');
+//require_once ($rootFile . '/common/FileInteractor.php');
 
 use common\FileInteractor;
 

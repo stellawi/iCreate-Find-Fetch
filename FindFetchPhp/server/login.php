@@ -1,14 +1,9 @@
 <?php
 namespace server;
 
-error_reporting(E_ALL);
-
 $rootFile = $_SERVER['DOCUMENT_ROOT'];
 
-require_once ($rootFile . '/data/User.php');
-require_once ($rootFile . '/data/UserData.php');
-require_once ($rootFile . '/exception/DataException.php');
-require_once ($rootFile . '/common/LogManager.php');
+require_once ($rootFile . '/server/initial.php');
 
 use data\UserData;
 use data\User;
@@ -52,10 +47,10 @@ if ($curUser == NULL){
 	
 	echo (json_encode($response));
 } elseif ($curUser->isPasswordMatch($password)){
-	session_start();
 	
 	$response["success"] = 1;
 	$response["message"] = "Login successful!";
+	$_SESSION['authuser'] = 1;
 	
 	echo (json_encode($response));
 } else {

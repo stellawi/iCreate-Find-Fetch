@@ -1,8 +1,6 @@
 <?php
 namespace data;
 
-error_reporting(E_ALL);
-
 class User {
 	private $_name;
 	private $_password;

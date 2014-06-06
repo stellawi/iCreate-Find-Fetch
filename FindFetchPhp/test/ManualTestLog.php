@@ -1,10 +1,10 @@
 <?php
 namespace test;
-	
-error_reporting(E_ALL);
-	
+		
 $rootFile = $_SERVER['DOCUMENT_ROOT'];
-require_once ($rootFile . '/common/LogManager.php');
+
+require_once ($rootFile . '/server/initial.php');
+//require_once ($rootFile . '/common/LogManager.php');
 	
 use common\LogManager;
 	

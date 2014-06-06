@@ -1,18 +1,15 @@
 <?php
 namespace data;
 
-error_reporting(E_ALL);
-
 $rootFile = $_SERVER['DOCUMENT_ROOT'];
 
-require_once ($rootFile . '/common/LogManager.php');
+//require_once ($rootFile . '/common/LogManager.php');
 
 use common\LogManager;
 use common\FileInteractor;
 use exception\DataException;
 use PDO;
 use PDOException;
-use common;
 
 class DataManager {
 	private $_logTyper = NULL;

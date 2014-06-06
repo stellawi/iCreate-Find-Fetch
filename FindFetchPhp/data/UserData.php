@@ -1,13 +1,11 @@
 <?php
 namespace data;
 
-error_reporting(E_ALL);
-
 $rootFile = $_SERVER['DOCUMENT_ROOT'];
 
-require_once ($rootFile . '/data/User.php');
-require_once ($rootFile . '/data/DataManager.php');
-require_once ($rootFile . '/exception/DataException.php');
+//require_once ($rootFile . '/data/User.php');
+//require_once ($rootFile . '/data/DataManager.php');
+//require_once ($rootFile . '/exception/DataException.php');
 
 use data\User;
 use data\DataManager;

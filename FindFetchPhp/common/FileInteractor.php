@@ -1,8 +1,6 @@
 <?php
 namespace common;
 
-error_reporting(E_ALL);
-
 class FileInteractor {
 	public static function interactWithFile($mode, $src) {
 		ini_set('display_errors', 1); 

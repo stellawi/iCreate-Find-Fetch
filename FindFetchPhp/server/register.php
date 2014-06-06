@@ -1,14 +1,9 @@
 <?php
 namespace server;
 
-error_reporting(E_ALL);
-
 $rootFile = $_SERVER['DOCUMENT_ROOT'];
 
-require_once ($rootFile . '/data/User.php');
-require_once ($rootFile . '/data/UserData.php');
-require_once ($rootFile . '/exception/DataException.php');
-require_once ($rootFile . '/common/LogManager.php');
+require_once ($rootFile . '/server/initial.php');
 
 use data\UserData;
 use data\User;
@@ -75,10 +70,10 @@ if (strcmp($password, $confirmPassword) != 0) {
 		return;
 	}
 	
-	session_start();
 	
 	$response["success"] = 1;
 	$response["message"] = "Register successful!";
+	$_SESSION['authuser'] = 1;
 	
 	echo (json_encode($response));
 }
