@@ -1,13 +1,15 @@
 <?php
-	namespace test;
+namespace test;
 	
-	$rootFile = $_SERVER['DOCUMENT_ROOT'];
-	require_once ($rootFile . '/common/LogManager.php');
+error_reporting(E_ALL);
 	
-	use common\LogManager;
+$rootFile = $_SERVER['DOCUMENT_ROOT'];
+require_once ($rootFile . '/common/LogManager.php');
 	
-	$message = "bla";
+use common\LogManager;
 	
-	$log = LogManager::getInstance();
-	$log->enterLog($message);
+$message = "bla";
+	
+$log = LogManager::getInstance();
+$log->enterLog($message);
 ?>

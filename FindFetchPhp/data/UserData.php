@@ -1,6 +1,8 @@
 <?php
 namespace data;
 
+error_reporting(E_ALL);
+
 $rootFile = $_SERVER['DOCUMENT_ROOT'];
 
 require_once ($rootFile . '/data/User.php');

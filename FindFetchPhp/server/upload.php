@@ -1,5 +1,7 @@
 <?php
 	namespace server;
+	
+	error_reporting(E_ALL);
 
 	$rootFile = $_SERVER['DOCUMENT_ROOT'];
 	
