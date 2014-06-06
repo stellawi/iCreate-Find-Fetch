@@ -11,6 +11,7 @@ use exception\DataException;
 use common\LogManager;
 
 $username = $_POST['username'];
+$phone = $_POST['phone'];
 $password = $_POST['password'];
 $confirmPassword = $_POST['confirm_password'];
 $type = $_POST['type'];
@@ -55,7 +56,7 @@ if (strcmp($password, $confirmPassword) != 0) {
 	
 	echo (json_encode($response));
 } else {
-	$curUser = new User($username, $password);
+	$curUser = new User($username, $password, $phone);
 	
 	try {
 		$db->saveUserToDatabase($curUser);
@@ -74,6 +75,7 @@ if (strcmp($password, $confirmPassword) != 0) {
 	$response["success"] = 1;
 	$response["message"] = "Register successful!";
 	$_SESSION['authuser'] = 1;
+	$_SESSION['user'] = $curUser;
 	
 	echo (json_encode($response));
 }

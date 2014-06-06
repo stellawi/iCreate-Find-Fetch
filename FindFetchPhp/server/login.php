@@ -51,6 +51,7 @@ if ($curUser == NULL){
 	$response["success"] = 1;
 	$response["message"] = "Login successful!";
 	$_SESSION['authuser'] = 1;
+	$_SESSION['user'] = $curUser;
 	
 	echo (json_encode($response));
 } else {
