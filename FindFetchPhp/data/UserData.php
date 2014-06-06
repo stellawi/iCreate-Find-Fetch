@@ -17,6 +17,7 @@ class UserData{
 	const USER_DATA_TABLE = "users";
 	const PARAM_NAME = "USERNAME";
 	const PARAM_PASS = "PASSWORD";
+	const PARAM_PHONE = "PHONE";
 		
 	public function __construct(){
 		self::initializeUserData();
@@ -44,8 +45,9 @@ class UserData{
 		if ($curUserData){
 			$name = $curUserData[self::PARAM_NAME];
 			$pass = $curUserData[self::PARAM_PASS];
+			$phone = $curUserData[self::PARAM_PHONE];
 			
-			$curUser = new User($name, $pass);
+			$curUser = new User($name, $pass, $phone);
 			
 			return $curUser;
 		} else {
@@ -79,7 +81,7 @@ class UserData{
 	 * @throws DataException
 	 */
 	public function saveUserToDatabase($curUser){
-		$dataParams = array(self::PARAM_NAME, self::PARAM_PASS);
+		$dataParams = array(self::PARAM_NAME, self::PARAM_PASS, self::PARAM_PHONE);
 		$dataValues = $curUser->getAllInfo();
 		$dest = self::USER_DATA_TABLE;
 		
