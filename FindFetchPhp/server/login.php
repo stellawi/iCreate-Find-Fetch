@@ -10,6 +10,8 @@ use data\User;
 use exception\DataException;
 use common\LogManager;
 
+$noData = "";
+
 $username = $_POST['username'];
 $password = $_POST['password'];
 $type = $_POST['type'];
@@ -22,6 +24,17 @@ define("TYPE_APPS", "apps");
 $db = new UserData();
 
 $htmlPage = "http://localhost/server/login.html";
+
+if ($username == $noData || $password == $noData){
+	$response["success"] = 0;
+	$response["message"] = "form incomplete";
+
+	if (strcmp($type, TYPE_WEB) == 0) {
+		echo "go back " . $htmlPage . " \n";
+	}
+	echo (json_encode($response));
+	return;
+}
 
 try {
 	$curUser = $db->getUser($username);

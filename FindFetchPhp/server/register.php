@@ -10,6 +10,8 @@ use data\User;
 use exception\DataException;
 use common\LogManager;
 
+$noData = "";
+
 $username = $_POST['username'];
 $phone = $_POST['phone'];
 $password = $_POST['password'];
@@ -24,6 +26,17 @@ $db = new UserData();
 
 $htmlPage = "http://localhost/server/register.html";
 
+if ($username == $noData || $phone == $noData || $password == $noData || $confirmPassword == $noData){
+	$response["success"] = 0;
+	$response["message"] = "form incomplete";
+	
+	if (strcmp($type, TYPE_WEB) == 0) {
+		echo "go back " . $htmlPage . " \n";
+	}
+	echo (json_encode($response));
+	return;
+}
+
 try {
 	$isExisted = $db->hasUser($username);
 } catch (DataException $ex) {
@@ -34,6 +47,7 @@ try {
 		echo "go back " . $htmlPage . " \n";
 	}
 	$log->enterLog($ex->getMessage());
+	echo (json_encode($response));
 	return;
 }
 
@@ -68,6 +82,7 @@ if (strcmp($password, $confirmPassword) != 0) {
 			echo "go back " . $htmlPage . " \n";
 		}
 		$log->enterLog($ex->getMessage());
+		echo (json_encode($response));
 		return;
 	}
 	

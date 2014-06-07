@@ -1,9 +1,9 @@
 <?php
 namespace server;
-	
-require_once ($rootFile . '/server/initial.php');
 
 $rootFile = $_SERVER['DOCUMENT_ROOT'];
+
+require_once ($rootFile . '/server/initial.php');
 	
 $dot = ".";
 
