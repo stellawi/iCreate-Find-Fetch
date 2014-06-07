@@ -4,13 +4,14 @@ namespace test;
 
 $rootFile = $_SERVER ['DOCUMENT_ROOT'];
 
-require_once ($rootFile . '/server/initial.php');
+require ($rootFile . '/server/initial.php');
+require_once ($rootFile . '/data/User.php');
+
 require_once ('/PHPUnit/Autoload.php');
-
-use data\User;
 use PHPUnit_Framework_TestCase;
+use data\User;
 
-class TestUser extends PHPUnit_Framework_TestCase {
+class UserTest extends PHPUnit_Framework_TestCase {
 	private function isArraySame($arrayA, $arrayB) {
 		if (!is_array($arrayA) || !is_array($arrayB)){
 			return false;
@@ -33,7 +34,9 @@ class TestUser extends PHPUnit_Framework_TestCase {
 		);
 		$curUser = new User ( $name, $pass, $phone );
 		$allInfo = $curUser->getAllInfo ();
-		$this->assertTrue(isArraySame($userDetails, $allInfo));
+		$this->assertTrue(self::isArraySame($userDetails, $allInfo));
 	}
 }
+
+
 ?>
