@@ -2,9 +2,11 @@
 
 namespace test;
 
+error_reporting ( E_ALL );
+
 $rootFile = $_SERVER ['DOCUMENT_ROOT'];
 
-require_once ($rootFile . '/data/User.php');
+require ($rootFile . '/data/User.php');
 require_once ('/PHPUnit/Autoload.php');
 
 use PHPUnit_Framework_TestCase;

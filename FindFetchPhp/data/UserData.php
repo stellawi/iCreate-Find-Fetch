@@ -1,8 +1,6 @@
 <?php
 namespace data;
 
-$rootFile = $_SERVER['DOCUMENT_ROOT'];
-
 use data\User;
 use data\DataManager;
 use exception\DataException;
