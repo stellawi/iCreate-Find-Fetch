@@ -4,6 +4,8 @@ namespace server;
 $rootFile = $_SERVER['DOCUMENT_ROOT'];
 
 require_once ($rootFile . '/server/initial.php');
+
+use data\UploadedFile;
 	
 $dot = ".";
 
@@ -12,51 +14,15 @@ $filetype = $_FILES["uploaded_file"]["type"];
 $filesize = $_FILES["uploaded_file"]["size"];
 $filetemp = $_FILES["uploaded_file"]["tmp_name"];
 $fileerror = $_FILES['uploaded_file']['error'];
-	
-$file_path = "/upload/";
-$file_path = $rootFile . $file_path . basename( $_FILES['uploaded_file']['name']);
-    
-echo $file_path . "<br>";
+
+$curFile = new UploadedFile($filename, $filetype, $filesize, $filetemp, $fileerror);
+
 echo "Upload: " . $filename . "<br>";
 echo "Type: " . $filetype . "<br>";
 echo "Size: " . ($filesize / 1024) . " kB <br>";
 echo "Stored in: " . $filetemp . "<br>";
     
-$maxFileSize = 1024000; 
-    
-if ($filesize > $maxFileSize) {
-	$response["success"] = 0;
-	$response["message"] = "File size too big! File size should be at most {$maxFileSize}/1024 kB";
-	echo (json_encode($response));
-    return;
-} elseif ($fileerror > 0) {
-	$response["success"] = 0;
-	$response["message"] = "Error: " . $fileerror . "<br>";
-	echo (json_encode($response));
-   	return;
-} elseif (file_exists($file_path)) {
-    $rand = 0;
-    $file_temp_path = $file_path;
-    	
-    $fileDots = explode($dot , $file_path);
-   	$dotsNum = count($fileDots) - 1;
-    $fileExtension = $dot . $fileDots[$dotsNum];
-    	
-   	while (file_exists($file_temp_path)){
-    	$file_temp_path = str_replace ($fileExtension , $rand . $fileExtension , $file_path);
-    	$rand++;
-    }
-    $file_path = $file_temp_path;
-} 
-    
-if (move_uploaded_file($filetemp , $file_path)) {
-	$response["success"] = 1;
-	$response["message"] = "success";
-	echo (json_encode($response));
-} else {
-    $response["success"] = 0;
-	$response["message"] = "fail";
-	echo (json_encode($response));
-}
-    
- ?>
+$response = $curFile->saveToDirectory();
+echo (json_encode($response));
+
+?>
