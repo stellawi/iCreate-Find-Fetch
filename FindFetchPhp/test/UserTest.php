@@ -4,10 +4,9 @@ namespace test;
 
 $rootFile = $_SERVER ['DOCUMENT_ROOT'];
 
-require ($rootFile . '/server/initial.php');
 require_once ($rootFile . '/data/User.php');
-
 require_once ('/PHPUnit/Autoload.php');
+
 use PHPUnit_Framework_TestCase;
 use data\User;
 
@@ -22,7 +21,9 @@ class UserTest extends PHPUnit_Framework_TestCase {
 		
 		return $arrayA == $arrayB;
 	}
-	public function testConstruct() {
+	
+	
+	public function testUserClass() {
 		$name = "Lynnette";
 		$pass = "18101993";
 		$phone = "90529098";
@@ -33,7 +34,11 @@ class UserTest extends PHPUnit_Framework_TestCase {
 		);
 		$curUser = new User ( $name, $pass, $phone );
 		$allInfo = $curUser->getAllInfo ();
+		
 		$this->assertTrue ( self::isArraySame ( $userDetails, $allInfo ) );
+		$this->assertEquals($name, $curUser->getName());
+		$this->assertEquals($phone, $curUser->getPhoneNumber());
+		$this->assertTrue($curUser->isPasswordMatch($pass));		
 	}
 }
 
