@@ -3,10 +3,6 @@ namespace data;
 
 $rootFile = $_SERVER['DOCUMENT_ROOT'];
 
-//require_once ($rootFile . '/data/User.php');
-//require_once ($rootFile . '/data/DataManager.php');
-//require_once ($rootFile . '/exception/DataException.php');
-
 use data\User;
 use data\DataManager;
 use exception\DataException;
