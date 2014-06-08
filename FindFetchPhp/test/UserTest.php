@@ -13,7 +13,7 @@ use data\User;
 
 class UserTest extends PHPUnit_Framework_TestCase {
 	private function isArraySame($arrayA, $arrayB) {
-		if (!is_array($arrayA) || !is_array($arrayB)){
+		if (! is_array ( $arrayA ) || ! is_array ( $arrayB )) {
 			return false;
 		}
 		
@@ -22,7 +22,6 @@ class UserTest extends PHPUnit_Framework_TestCase {
 		
 		return $arrayA == $arrayB;
 	}
-	
 	public function testConstruct() {
 		$name = "Lynnette";
 		$pass = "18101993";
@@ -34,9 +33,8 @@ class UserTest extends PHPUnit_Framework_TestCase {
 		);
 		$curUser = new User ( $name, $pass, $phone );
 		$allInfo = $curUser->getAllInfo ();
-		$this->assertTrue(self::isArraySame($userDetails, $allInfo));
+		$this->assertTrue ( self::isArraySame ( $userDetails, $allInfo ) );
 	}
 }
-
 
 ?>
