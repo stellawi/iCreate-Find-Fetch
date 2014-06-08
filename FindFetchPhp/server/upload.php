@@ -25,10 +25,14 @@ echo "Stored in: " . $filetemp . "<br>";
 $maxFileSize = 1024000; 
     
 if ($filesize > $maxFileSize) {
-	echo "File size too big! File size should be at most {$maxFileSize}/1024 kB";
+	$response["success"] = 0;
+	$response["message"] = "File size too big! File size should be at most {$maxFileSize}/1024 kB";
+	echo (json_encode($response));
     return;
 } elseif ($fileerror > 0) {
-    echo "Error: " . $fileerror . "<br>";
+	$response["success"] = 0;
+	$response["message"] = "Error: " . $fileerror . "<br>";
+	echo (json_encode($response));
    	return;
 } elseif (file_exists($file_path)) {
     $rand = 0;
@@ -46,9 +50,13 @@ if ($filesize > $maxFileSize) {
 } 
     
 if (move_uploaded_file($filetemp , $file_path)) {
-    echo "success";
+	$response["success"] = 1;
+	$response["message"] = "success";
+	echo (json_encode($response));
 } else {
-    echo "fail";
+    $response["success"] = 0;
+	$response["message"] = "fail";
+	echo (json_encode($response));
 }
     
  ?>

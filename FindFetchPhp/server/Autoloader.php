@@ -16,7 +16,6 @@ class Autoloader {
 		$className = str_replace ( "\\", "/", $className );
 		$className = $rootFile . "/" . $className . '.php';
 
-		echo $className . "\n";
 		if (file_exists ( $className )) {
 			require_once ($className);
 		}
