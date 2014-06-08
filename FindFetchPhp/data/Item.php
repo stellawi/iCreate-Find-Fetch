@@ -36,5 +36,37 @@ class Item {
 		);
 		return $allInfo;
 	}
+	
+	public function getItemName(){
+		return $this->_itemname;
+	}
+	
+	public function getItemType(){
+		return $this->_itemtype;
+	}
+	
+	public function getVenue(){
+		return $this->_venue;
+	}
+	
+	public function getDate(){
+		return $this->_date;
+	}
+	
+	public function getTime(){
+		return $this->_time;
+	}
+	
+	public function getUserName(){
+		return $this->_username;
+	}
+	
+	public function getPhotoPath(){
+		return $this->_photopath;
+	}
+	
+	public function isItemActive(){
+		return $this->_isActive;
+	}
 }
 ?>
