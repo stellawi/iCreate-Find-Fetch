@@ -6,7 +6,7 @@ use data\DataManager;
 use exception\DataException;
 
 class UserData{
-	private $dataManagerInstance = NULL;
+	private $_dataManagerInstance = NULL;
 	
 	const USER_DATA_TABLE = "users";
 	const PARAM_NAME = "USERNAME";
@@ -18,7 +18,7 @@ class UserData{
 	}
 	
 	private function initializeUserData(){
-		$this->dataManagerInstance = new DataManager();
+		$this->_dataManagerInstance = new DataManager();
 	}
 
 	/**
@@ -31,7 +31,7 @@ class UserData{
 		$param = self::PARAM_NAME;
 		
 		try {
-			$curUserData = $this->dataManagerInstance->retrieveSingleData($username, $param, self::USER_DATA_TABLE);
+			$curUserData = $this->_dataManagerInstance->retrieveSingleData($username, $param, self::USER_DATA_TABLE);
 		} catch (DataException $ex){
 			throw $ex;
 		}
@@ -80,14 +80,14 @@ class UserData{
 		$dest = self::USER_DATA_TABLE;
 		
 		try {
-			$this->dataManagerInstance->insertData($dataParams, $dataValues, $dest);
+			$this->_dataManagerInstance->insertData($dataParams, $dataValues, $dest);
 		} catch (DataException $ex){
 			throw $ex;
 		}
 	}
 	
 	public function closeUserData(){
-		$this->dataManagerInstance->closeDatabase();
+		$this->_dataManagerInstance->closeDatabase();
 	}
 }
 ?>

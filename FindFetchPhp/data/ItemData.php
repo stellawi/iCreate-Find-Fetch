@@ -7,14 +7,15 @@ use data\DataManager;
 use exception\DataException;
 
 class ItemData{
-	private $dataManagerInstance = NULL;
+	private $_dataManagerInstance = NULL;
 
 	public function __construct(){
 		self::initializeItemData();
 	}
 
 	private function initializeItemData(){
-		$this->dataManagerInstance = new DataManager();
+		$this->_dataManagerInstance = new DataManager();
 	}
+}
 
 ?>
