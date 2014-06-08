@@ -13,6 +13,7 @@ class UploadedFile {
 	private $_isSave;
 	const DIRECTORY_UPLOAD = "/upload/";
 	const MAX_FILE_SIZE = 1024000;
+	const DOT = ".";
 	
 	public function __construct($filename, $filetype, $filesize, $filetemp, $fileerror) {
 		$this->_filename = $filename;
@@ -73,6 +74,7 @@ class UploadedFile {
 	}
 	
 	private function getUniqueFilePath($file_path) {
+		$dot = self::DOT;
 		$rand = 0;
 		$file_temp_path = $file_path;
 		
