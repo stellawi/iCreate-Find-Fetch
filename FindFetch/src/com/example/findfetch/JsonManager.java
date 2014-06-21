@@ -1,4 +1,4 @@
-package com.findfetch;
+package com.example.findfetch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
