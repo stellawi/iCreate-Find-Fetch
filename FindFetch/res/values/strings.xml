@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">FindFetch</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="splash">Let us help you find what you have loss!</string>
 
 </resources>

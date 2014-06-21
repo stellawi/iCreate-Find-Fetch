@@ -8,16 +8,18 @@ class Item {
 	private $_venue;
 	private $_date;
 	private $_time;
+	private $_insertdatetime;
 	private $_username;
 	private $_photopath;
 	private $_isActive;
 	
-	public function __construct($itemname, $itemtype, $venue, $date, $time, $username, $photopath, $isActive) {
+	public function __construct($itemname, $itemtype, $venue, $date, $time, $username, $photopath, $insertDateTime, $isActive) {
 		$this->_itemname = $itemname;
 		$this->_itemtype = $itemtype;
 		$this->_venue = $venue;
 		$this->_date = $date;
 		$this->_time = $time;
+		$this->_insertdatetime = $insertDateTime;
 		$this->_username = $username;
 		$this->_photopath = $photopath;
 		$this->_isActive = $isActive;
@@ -30,6 +32,7 @@ class Item {
 				$this->_venue,
 				$this->_date,
 				$this->_time,
+				$this->_insertdatetime,
 				$this->_username,
 				$this->_photopath,
 				$this->_isActive
@@ -55,6 +58,10 @@ class Item {
 	
 	public function getTime(){
 		return $this->_time;
+	}
+	
+	public function getInsertDateTime(){
+		return $this->_insertdatetime;
 	}
 	
 	public function getUserName(){
